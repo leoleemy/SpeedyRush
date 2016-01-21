@@ -190,7 +190,7 @@ public class Game extends Application {
 		
 		ParallelTransition pt = new ParallelTransition(tt);
 		
-
+		
 		pt.play();
 		**/
 		
