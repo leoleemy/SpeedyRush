@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.shape.*?>
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8">
+<AnchorPane prefHeight="600.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <children>
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#f2f2f2" height="600.0" layoutX="75.0" stroke="BLACK" strokeType="INSIDE" width="250.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="75.0" layoutX="195.0" layoutY="10.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
@@ -15,5 +15,38 @@
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="75.0" layoutX="195.0" layoutY="310.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="75.0" layoutX="195.0" layoutY="410.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
       <Rectangle arcHeight="5.0" arcWidth="5.0" fill="YELLOW" height="75.0" layoutX="195.0" layoutY="510.0" stroke="BLACK" strokeType="INSIDE" width="10.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffe5" height="40.0" stroke="BLACK" strokeType="INSIDE" width="125.0" />
+      <Text layoutX="10.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Level">
+         <font>
+            <Font name="Consolas" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="80.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="99">
+         <font>
+            <Font name="Consolas" size="21.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#ffffffe5" height="70.0" layoutX="210.0" stroke="BLACK" strokeType="INSIDE" width="190.0" />
+      <Text layoutX="220.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Score:">
+         <font>
+            <Font name="Consolas" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="290.0" layoutY="30.0" strokeType="OUTSIDE" strokeWidth="0.0" text="9,999">
+         <font>
+            <Font name="Consolas" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="220.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Armor:">
+         <font>
+            <Font name="Consolas" size="21.0" />
+         </font>
+      </Text>
+      <Text layoutX="290.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="500">
+         <font>
+            <Font name="Consolas" size="21.0" />
+         </font>
+      </Text>
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="85.0" layoutX="175.0" layoutY="480.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
    </children>
 </AnchorPane>

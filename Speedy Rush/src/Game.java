@@ -14,6 +14,7 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -23,33 +24,18 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class Game extends Application {
+	Stage stage;
 	
-	//for prepare the graphics
 	public void start(Stage titleStage){
+		stage = titleStage;
 		
-		titleStage.setTitle("Speedy Rush");
+		GameWorld gameWorld = new GameWorld(this);
 		
-		Pane root = new Pane();
-		Group root2 = new Group();
-		Scene titleScene = new Scene(root,400,600);
+		stage.setTitle("Speedy Rush");
+		Pane titleScreenPane = new Pane();
+		Scene titleScene = new Scene(titleScreenPane,400,600);	
 		Font myFont = new Font("Consolas",18);
-		
 
-		/**	
-		Button btn3 = new Button();
-		btn3.setText("Back");
-		root2.getChildren().add(btn3);
-		
-		btn3.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-            	titleScene.setRoot(root);
-            	titleStage.setScene(titleScene);
-            	
-            }
-        });
-		**/
-		
 		
 		Button btnStart = new Button();
 		btnStart.setFont(myFont);
@@ -58,8 +44,9 @@ public class Game extends Application {
 		btnStart.setOnAction(new EventHandler<ActionEvent>() {
 	            @Override
 	            public void handle(ActionEvent event) {
-	            	titleScene.setRoot(root2);
-	            	titleStage.setScene(titleScene);
+	            	//initGameScene();
+	            	//titleStage.setScene(gameScene); 
+	            	stage.setScene(gameWorld.gameScene);
 	            	
 	            }
 	        });
@@ -86,9 +73,7 @@ public class Game extends Application {
 		menuButtons.setLayoutY(320);
         menuButtons.getChildren().add(btnStart);
         menuButtons.getChildren().add(btnScoreBoard);
-        
-                        
-        
+         
         Text gameTitle = new Text("Speedy Rush");
         gameTitle.setFont(new Font("Consolas",46));
         gameTitle.setLayoutX(65);
@@ -116,34 +101,33 @@ public class Game extends Application {
         backgroundRoad.setLayoutY(0);
         
         
-        root.getChildren().add(backgroundRoad);
+        titleScreenPane.getChildren().add(backgroundRoad);
         
         roadAnimation(titleScene);
          
-        root.getChildren().add(BackgroundTitle);
-        root.getChildren().add(BackgroundCredit);
+        titleScreenPane.getChildren().add(BackgroundTitle);
+        titleScreenPane.getChildren().add(BackgroundCredit);
         
-        root.getChildren().add(gameTitle);
-        root.getChildren().add(menuButtons);
-        root.getChildren().add(gameCredit);
+        titleScreenPane.getChildren().add(gameTitle);
+        titleScreenPane.getChildren().add(menuButtons);
+        titleScreenPane.getChildren().add(gameCredit);
         
         
  
         
+
         
+        stage.setScene(titleScene);
         
-        
-        titleStage.setScene(titleScene);
-        
-		titleStage.show();
+        stage.show();
+		
 	}
 	public static void main (String[] args){
 		launch(args);
 	}
 	
 	public void roadAnimation(Scene scene){
-		
-		final Pane root = (Pane) scene.getRoot();
+		 final Pane root = (Pane) scene.getRoot();
 		 Rectangle[] yellowLines = new Rectangle[8];
 		 
 
@@ -175,28 +159,7 @@ public class Game extends Application {
 		
 		tl.getKeyFrames().addAll(kf1,kf2);
 		tl.setCycleCount(Animation.INDEFINITE);
-		tl.play();
-	
-		
-		/**
-		TranslateTransition[] tt = new TranslateTransition[8];
-		
-		for (int i = 0; i<8; i++){
-			tt[i] = new TranslateTransition(Duration.millis(1000),yellowLines[i]); 
-			tt[i].setByY(100);
-			tt[i].setCycleCount(Animation.INDEFINITE);
-			tt[i].setAutoReverse(false);
-		}
-		
-		ParallelTransition pt = new ParallelTransition(tt);
-		
-		
-		pt.play();
-		**/
-		
-		
-		
-		
+		tl.play();	
 	}
-
+	
 }
