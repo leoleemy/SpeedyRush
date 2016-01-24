@@ -47,6 +47,6 @@
             <Font name="Consolas" size="21.0" />
          </font>
       </Text>
-      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="85.0" layoutX="175.0" layoutY="480.0" stroke="BLACK" strokeType="INSIDE" width="50.0" />
+      <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="80.0" layoutX="180.0" layoutY="470.0" stroke="BLACK" strokeType="INSIDE" width="40.0" />
    </children>
 </AnchorPane>

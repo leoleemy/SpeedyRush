@@ -11,6 +11,9 @@ import javafx.scene.*;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -25,12 +28,12 @@ import javafx.util.Duration;
 
 public class Game extends Application {
 	Stage stage;
+	Player player = new Player();
 	
 	public void start(Stage titleStage){
-		stage = titleStage;
-		
 		GameWorld gameWorld = new GameWorld(this);
 		
+		stage = titleStage;	
 		stage.setTitle("Speedy Rush");
 		Pane titleScreenPane = new Pane();
 		Scene titleScene = new Scene(titleScreenPane,400,600);	
@@ -46,6 +49,7 @@ public class Game extends Application {
 	            public void handle(ActionEvent event) {
 	            	//initGameScene();
 	            	//titleStage.setScene(gameScene); 
+	            	gameWorld.initGame();
 	            	stage.setScene(gameWorld.gameScene);
 	            	
 	            }
@@ -101,22 +105,52 @@ public class Game extends Application {
         backgroundRoad.setLayoutY(0);
         
         
-        titleScreenPane.getChildren().add(backgroundRoad);
+        //titleScreenPane.getChildren().add(backgroundRoad);
         
-        roadAnimation(titleScene);
+        gameWorld.roadStartAnimation(titleScene);
          
+        player.create(titleScreenPane);
+        
+        ImageView arrowLeft = new ImageView(new Image("/icon/arrowLeft.png"));
+        ImageView arrowRight = new ImageView(new Image("/icon/arrowRight.png"));
+		
+        arrowLeft.setX(100);
+        arrowLeft.setY(490);
+        arrowRight.setX(250);
+        arrowRight.setY(490);
+        
+        
+        arrowLeft.setOnMouseClicked(
+				new EventHandler<MouseEvent>(){
+					public void handle(MouseEvent e){
+						Player.carIndex += 1;
+						player.changeCar();
+					}
+				});
+        
+        arrowRight.setOnMouseClicked(
+				new EventHandler<MouseEvent>(){
+					public void handle(MouseEvent e){
+						Player.carIndex -= 1;
+						player.changeCar();
+					}
+				});
+        
+        //TODO: sizable issue (not allow windows to resize)
+        
+        titleScreenPane.getChildren().add(arrowLeft);
+        titleScreenPane.getChildren().add(arrowRight);
+        
         titleScreenPane.getChildren().add(BackgroundTitle);
         titleScreenPane.getChildren().add(BackgroundCredit);
+        
         
         titleScreenPane.getChildren().add(gameTitle);
         titleScreenPane.getChildren().add(menuButtons);
         titleScreenPane.getChildren().add(gameCredit);
         
-        
- 
-        
 
-        
+
         stage.setScene(titleScene);
         
         stage.show();
@@ -126,40 +160,5 @@ public class Game extends Application {
 		launch(args);
 	}
 	
-	public void roadAnimation(Scene scene){
-		 final Pane root = (Pane) scene.getRoot();
-		 Rectangle[] yellowLines = new Rectangle[8];
-		 
-
-		for (int i = 0; i<8; i++){
-			yellowLines[i] = new Rectangle(10,75);
-			yellowLines[i].setStroke(Color.BLACK);
-	        yellowLines[i].setArcHeight(5);
-	        yellowLines[i].setArcWidth(5);
-	        yellowLines[i].setFill(Color.web("#ffff00"));
-	        yellowLines[i].setLayoutX(195);
-	        yellowLines[i].setLayoutY(-90 + i*100);
-	        root.getChildren().add(yellowLines[i]);
-		}
-		
-		Timeline tl = new Timeline();
-		KeyValue[] linesY = new KeyValue[8];
-		KeyValue[] linesNewY = new KeyValue[8];
-		
-		for (int i = 0; i<8; i++){
-			linesY[i] = new KeyValue(yellowLines[i].layoutYProperty(), yellowLines[i].getLayoutY());
-		}
-		for (int i = 0; i<8; i++){
-			linesNewY[i] = new KeyValue(yellowLines[i].layoutYProperty(), yellowLines[i].getLayoutY()+100);
-		}
-		
-		
-		KeyFrame kf1 = new KeyFrame(Duration.millis(0),linesY);
-		KeyFrame kf2 = new KeyFrame(Duration.millis(2000),linesNewY);
-		
-		tl.getKeyFrames().addAll(kf1,kf2);
-		tl.setCycleCount(Animation.INDEFINITE);
-		tl.play();	
-	}
 	
 }
