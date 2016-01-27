@@ -1,5 +1,6 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Pane;
 
 public class Enemy extends Entity {
 	int xCoord = 180;
@@ -16,6 +17,7 @@ public class Enemy extends Entity {
 	@Override
 	public void move(float multiplier) {
 		// TODO Auto-generated method stub
+		this.yCoord -= 1;  //moving downward
 
 	}
 
@@ -23,6 +25,10 @@ public class Enemy extends Entity {
 	public void destroy() {
 		// TODO Auto-generated method stub
 
+	}
+	
+	public void respawn(Pane pane){
+		
 	}
 
 }
