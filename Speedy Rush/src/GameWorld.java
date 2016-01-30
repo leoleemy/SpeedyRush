@@ -24,6 +24,15 @@ public class GameWorld implements Runnable{
 	Player player = new Player();
 	Pane gameWorldPane;
 	Pane roadPane;
+	int currentLevel = 1;
+	static int playerScore = 0;
+	boolean isGameOver = false;
+	Enemy enemy = new Enemy();
+	Thread enemythread;
+	
+	Text txtLevel;
+	static Text txtScore;
+	Text txtArmor;
 	
 	
 	GameWorld(Game game){
@@ -43,17 +52,17 @@ public class GameWorld implements Runnable{
 		playerInfoBox.setLayoutX(210);
 		playerInfoBox.setLayoutY(0);
 		
-		Text txtLevel = new Text("Level ");
+		txtLevel = new Text("Level " + currentLevel);
 		txtLevel.setFont(gameFont);
 		txtLevel.setLayoutX(10);
 		txtLevel.setLayoutY(25);
         
-        Text txtScore = new Text("Score:");
+        txtScore = new Text("Score: " + playerScore);
         txtScore.setFont(gameFont);
         txtScore.setLayoutX(220);
         txtScore.setLayoutY(30);
         
-        Text txtArmor = new Text("Armor:");
+        txtArmor = new Text("Armor:");
         txtArmor.setFont(gameFont);
         txtArmor.setLayoutX(220);
         txtArmor.setLayoutY(60);
@@ -65,8 +74,10 @@ public class GameWorld implements Runnable{
 		gameWorldPane.getChildren().add(playerInfoBox);
 		gameWorldPane.getChildren().add(txtLevel);
 		gameWorldPane.getChildren().add(txtScore);
-		gameWorldPane.getChildren().add(txtArmor);	
-				
+		gameWorldPane.getChildren().add(txtArmor);
+		
+		
+		
 	}
 
 	public void roadStartAnimation(Scene scene){
@@ -122,17 +133,60 @@ public class GameWorld implements Runnable{
 							player.move(e);	
 						}
 					});
+	     enemy.respawn(roadPane);
+	     new Thread(enemy).start();
+	     
+	     
 	}
 	
-	public void playerCreated(Scene scene){
-		
-	}
 
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-
+		//new Thread(enemy).start();
+		
+		/*
+		enemy.run();
+		while(enemy.yCoord >= 0){
+			enemy.yCoord -= 1;
+			enemy.EnemyView.setLayoutY(enemy.yCoord);
+		}
+		*/
 		
 	}
 	
+	
+	public static void addScore(){
+		System.out.println("addScore()");
+		playerScore += 100;
+		txtScore.setText("Score: " + playerScore);
+	}
+	
+	
+	//
+	class checkCollision extends Thread{
+		String entityType;
+		checkCollision(Entity entity){
+			if(entity instanceof Enemy){
+				entityType  = "Enemy";
+			}
+			
+		}
+		public void run(){
+			if(entityType == "String"){
+			while (enemy.yCoord <= 600){
+			if (enemy.passed == false){
+				if (enemy.yCoord > player.yCoord) {
+					playerScore += 100;
+					txtScore.setText("Score: " + playerScore);
+					enemy.passed = true;
+				}
+			} else;
+			}
+		}
+		}
+		
+	}
+	
+	//
 }

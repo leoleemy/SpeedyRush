@@ -4,10 +4,10 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
 public class Player extends Entity {
-	int xCoord = 180;
-	int yCoord = 470;
-	int width = 40;
-	int height = 80;
+	static double xCoord = 180;
+	static double yCoord = 470;
+	static int width = 40;
+	static int height = 80;
 	static int carIndex = 0;
 	Image[] playerImage = {new Image("/img/playerCar01.jpg"), new Image("/img/playerCar02.jpg")};
 	ImageView playerView = new ImageView(playerImage[carIndex]);
@@ -19,33 +19,49 @@ public class Player extends Entity {
 			if ((e.getY() + 80 > 600)&&(e.getX() < 75)){
 				playerView.setX(75);
 				playerView.setY(600-80);
+				xCoord = 75;
+				yCoord = 600-80;
 			}
 			
 			else if ((e.getY() + 80 > 600)&&(e.getX() + 40 > 325)){
 				playerView.setX(325-40);
 				playerView.setY(600-80);
+				xCoord = 325-40;
+				yCoord = 600-80;
 			}
 			
 			else if (e.getX() < 75){
 				playerView.setX(75);
 				playerView.setY(e.getY());
+				xCoord = 75;
+				yCoord = e.getY();
+				
 			}
 			else if (e.getX() + 40 > 325){
 				playerView.setX(325-40);
 				playerView.setY(e.getY());
+				xCoord = 325-40;
+				yCoord = e.getY();
+				
 			}	
 			else if (e.getY() < 0){
 				playerView.setX(e.getX());
 				playerView.setY(0);
+				xCoord = e.getX();
+				yCoord = 0;
 			}
 			else if (e.getY() + 80 > 600){
 				playerView.setX(e.getX());
 				playerView.setY(600-80);
+				xCoord = e.getX();
+				yCoord = 600-80;
 			}
 			
 			else {
 				playerView.setX(e.getX());
 				playerView.setY(e.getY());
+				xCoord = e.getX();
+				yCoord = e.getY();
 			}
 			
 			
