@@ -35,6 +35,7 @@ public class Game extends Application {
 		
 		stage = titleStage;	
 		stage.setTitle("Speedy Rush");
+		stage.setResizable(false);
 		Pane titleScreenPane = new Pane();
 		Scene titleScene = new Scene(titleScreenPane,400,600);	
 		Font myFont = new Font("Consolas",18);

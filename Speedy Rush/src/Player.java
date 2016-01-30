@@ -12,6 +12,7 @@ public class Player extends Entity {
 	Image[] playerImage = {new Image("/img/playerCar01.jpg"), new Image("/img/playerCar02.jpg")};
 	ImageView playerView = new ImageView(playerImage[carIndex]);
 	float speed;
+	static int armor = 200;
 	
 	
 	public void move(MouseEvent e) {

@@ -1,6 +1,7 @@
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
+import javafx.scene.text.Text;
 
 public class Enemy extends Entity implements Runnable{
 	double xCoord;
@@ -32,7 +33,7 @@ public class Enemy extends Entity implements Runnable{
 	}
 	
 	public void respawn(Pane pane){
-		xCoord = 400*Math.random() + 70;
+		xCoord = (250-width)*Math.random() + 70;
 		yCoord = 40;
 		EnemyView.setImage(EnemyImage[0]);
 		EnemyView.setX(xCoord);
@@ -44,8 +45,10 @@ public class Enemy extends Entity implements Runnable{
 	@Override
 	public void run() {
 		checkCollision p = new checkCollision();
+		checkPass pk = new checkPass();
 		p.start();
-		while (this.yCoord <= 300){ //yCoord = 600 final
+		pk.start();
+		while (this.yCoord <= 600){ 
 			try {
 				this.move(0);  //moving downward
 				Thread.sleep(50);
@@ -57,8 +60,7 @@ public class Enemy extends Entity implements Runnable{
 	this.destroy();	
 		
 	}
-	
-	class checkCollision extends Thread{
+	class checkPass extends Thread{
 		public void run(){
 			while (yCoord <= 600){
 			if (passed == false){
@@ -69,8 +71,28 @@ public class Enemy extends Entity implements Runnable{
 					Thread.interrupted();
 				}
 			}
-			//if(xCoord + )
-			
+			}
+		}
+	}
+	
+	class checkCollision extends Thread{
+		public void run(){
+			while (yCoord <= 600){
+				if((yCoord + height > Player.yCoord) && 
+					(yCoord < Player.yCoord + Player.height) &&
+					(xCoord < Player.xCoord + Player.width) &&
+					(xCoord + width > Player.xCoord))
+			{
+				System.out.println("hit");
+				Player.armor -= 10;
+				GameWorld.txtArmor.setText("Armor: " + Player.armor);
+				try {
+					Thread.sleep(3000);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}	
 		}
 			
 			

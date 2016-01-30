@@ -32,7 +32,7 @@ public class GameWorld implements Runnable{
 	
 	Text txtLevel;
 	static Text txtScore;
-	Text txtArmor;
+	static Text txtArmor;
 	
 	
 	GameWorld(Game game){
@@ -61,8 +61,8 @@ public class GameWorld implements Runnable{
         txtScore.setFont(gameFont);
         txtScore.setLayoutX(220);
         txtScore.setLayoutY(30);
-        
-        txtArmor = new Text("Armor:");
+         
+        txtArmor = new Text("Armor:" + player.armor);
         txtArmor.setFont(gameFont);
         txtArmor.setLayoutX(220);
         txtArmor.setLayoutY(60);
