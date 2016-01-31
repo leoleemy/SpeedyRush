@@ -3,15 +3,17 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 
-public class Player extends Entity {
+public class Player extends Entity implements Runnable {
 	static double xCoord = 180;
 	static double yCoord = 470;
 	static int width = 40;
 	static int height = 80;
 	static int carIndex = 0;
+	static int playerScore = 0;
 	Image[] playerImage = {new Image("/img/playerCar01.jpg"), new Image("/img/playerCar02.jpg")};
 	ImageView playerView = new ImageView(playerImage[carIndex]);
 	float speed;
+	static int armor = 20;  //200 default
 	
 	
 	public void move(MouseEvent e) {
@@ -71,10 +73,10 @@ public class Player extends Entity {
 
 	@Override
 	public void destroy() {
-
 	}
 	
 	public void create(Pane pane){
+		armor = 20;
 		playerView.setImage(playerImage[carIndex]);
 		playerView.setX(180);
 		playerView.setY(470);
@@ -95,6 +97,20 @@ public class Player extends Entity {
 	@Override
 	public void move(float multiplier) {
 		// TODO Auto-generated method stub
+		
+	}
+
+
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		if(armor <= 0){
+			//GameWorld.gameOver();
+		}
+	}
+	
+	public void checkGame(){
 		
 	}
 	

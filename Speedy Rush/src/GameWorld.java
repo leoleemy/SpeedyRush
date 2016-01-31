@@ -5,6 +5,7 @@ import javafx.animation.KeyFrame;
 import javafx.animation.KeyValue;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -24,20 +25,31 @@ public class GameWorld implements Runnable{
 	Player player = new Player();
 	Pane gameWorldPane;
 	Pane roadPane;
-	int currentLevel = 1;
+	static int currentLevel = 1;
+	static float levelMultiplier = 1;
 	static int playerScore = 0;
+	long timeInterval = 8000;
 	boolean isGameOver = false;
-	Enemy enemy = new Enemy();
-	Thread enemythread;
+	boolean isGameStarted = false;
+	//Enemy enemy = new Enemy();
+	Enemy[] enemyList = new Enemy[10];
+	int nextLevelScore[] = {1000,3000,6000,10000,20000,30000,40000,50000,75000,100000};
 	
-	Text txtLevel;
+	//Thread enemythread;
+	Thread checkGameThread;
+	Thread mainGame = new Thread(this);
+	
+	static Text txtLevel;
 	static Text txtScore;
-	Text txtArmor;
+	static Text txtArmor;
+	
+	Game gameClass;
 	
 	
 	GameWorld(Game game){
 		gameWorldPane = new Pane();
 		roadPane = new Pane();
+		gameClass = game;
 		
 		gameScene = new Scene(gameWorldPane,400,600);
 		Font gameFont = new Font("Consolas",21);
@@ -46,7 +58,7 @@ public class GameWorld implements Runnable{
 		levelBox.setFill(Color.web("#ffffff",0.9));
 		levelBox.setLayoutX(0);
 		levelBox.setLayoutY(0);
-		
+
 		Rectangle playerInfoBox = new Rectangle(190,70);
 		playerInfoBox.setFill(Color.web("#ffffff",0.9));
 		playerInfoBox.setLayoutX(210);
@@ -61,15 +73,14 @@ public class GameWorld implements Runnable{
         txtScore.setFont(gameFont);
         txtScore.setLayoutX(220);
         txtScore.setLayoutY(30);
-        
-        txtArmor = new Text("Armor:");
+         
+        txtArmor = new Text("Armor:" + player.armor);
         txtArmor.setFont(gameFont);
         txtArmor.setLayoutX(220);
         txtArmor.setLayoutY(60);
 		
         roadStartAnimation(gameScene);
         gameWorldPane.getChildren().add(roadPane);
-        
 		gameWorldPane.getChildren().add(levelBox);
 		gameWorldPane.getChildren().add(playerInfoBox);
 		gameWorldPane.getChildren().add(txtLevel);
@@ -122,39 +133,134 @@ public class GameWorld implements Runnable{
 		
 		tl.getKeyFrames().addAll(kf1,kf2);
 		tl.setCycleCount(Animation.INDEFINITE);
+
 		tl.play();	
 	}
 	
 	public void initGame(){	
+	     try {
+				mainGame.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	     //Thread mainGame = new Thread(this);
+	     mainGame = new Thread(this);
+	     checkGameThread = new Thread( new Runnable(){
+	    	 public void run(){
+	    		 while (isGameStarted == true && isGameOver == false){
+	    			 checkGame();
+	    			 try {
+	    	                Thread.sleep(1);
+	    	            } catch (InterruptedException e) {
+	    	                Thread.currentThread().interrupt();
+	    	            }
+	    		 }
+	    		 System.out.println("game loop end");
+	    	 }
+	     });
+	     
 	     player.create(roadPane);
+	     	currentLevel = 1;
+	     	playerScore = 0;
+	     	txtLevel.setText("Level " + currentLevel);        
+	        txtScore.setText("Score: " + playerScore);
+	        txtArmor.setText("Armor:" + player.armor);
+			
+	        //roadStartAnimation(gameScene);
+	        
 	     gameScene.setOnMouseMoved(
 					new EventHandler<MouseEvent>(){
 						public void handle(MouseEvent e){
 							player.move(e);	
 						}
 					});
-	     enemy.respawn(roadPane);
-	     new Thread(enemy).start();
+	     isGameStarted = true;
 	     
+	     mainGame.start();
+	     checkGameThread.start();
 	     
 	}
+	public void gameOver(){
+		//mainGame = null;
+		//checkGameThread = null;
+		
+		for(int i =0; i<enemyList.length;i++){
+				//roadPane.getChildren().remove(enemyList[Enemy.numberOfEnemy].EnemyView);
+				if(enemyList[i] != null){
+				   enemyList[i].destroy();
+				   enemyList[i]=null;
+				}
+		}
+		
+		//enemyList = null;
+		isGameStarted = false;
+		roadPane.getChildren().clear();
+		
+	}
 	
-
+	public static void levelUp(){
+		
+	}
+	
+	public void checkGame(){
+		if(Player.armor <= 0){
+			
+			Platform.runLater(new Runnable() {
+                @Override public void run() {
+                	gameOver();
+                	gameClass.stage.setScene(gameClass.gameOver.gameOverScene);
+                }
+            });
+			
+		}
+		if(playerScore >= nextLevelScore[currentLevel-1]){
+			if (currentLevel < 10){
+			currentLevel += 1;
+			txtLevel.setText("Level " + currentLevel);
+			levelMultiplier -= 0.08;
+			timeInterval = (long) (timeInterval*levelMultiplier);
+			}
+		}
+	}
+	
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
 		//new Thread(enemy).start();
-		
-		/*
-		enemy.run();
-		while(enemy.yCoord >= 0){
-			enemy.yCoord -= 1;
-			enemy.EnemyView.setLayoutY(enemy.yCoord);
-		}
-		*/
+		while (isGameStarted == true && isGameOver == false){
+			//checkGame();
+			EnemySpawn();
+			//new Thread(enemyList[Enemy.numberOfEnemy]).start();
+			System.out.println(Enemy.numberOfEnemy);
+			try {
+				//Thread.sleep(timeInterval);
+				Thread.sleep(timeInterval);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+		};
+		System.out.println(Thread.currentThread());
 		
 	}
 	
+	public void EnemySpawn(){
+		Platform.runLater(new Runnable() {
+			   @Override
+			   public void run() {
+				   if (enemyList[Enemy.numberOfEnemy] != null){
+					   roadPane.getChildren().remove(enemyList[Enemy.numberOfEnemy].EnemyView);
+					   enemyList[Enemy.numberOfEnemy].EnemyThread = null;
+					   //enemyList[Enemy.numberOfEnemy].EnemyView = null;
+					   enemyList[Enemy.numberOfEnemy] = null;
+				   }
+				   enemyList[Enemy.numberOfEnemy] = new Enemy(roadPane);  
+				   System.out.println(enemyList[Enemy.numberOfEnemy]);
+			   }
+			});
+	}
 	
 	public static void addScore(){
 		System.out.println("addScore()");
@@ -171,21 +277,7 @@ public class GameWorld implements Runnable{
 				entityType  = "Enemy";
 			}
 			
-		}
-		public void run(){
-			if(entityType == "String"){
-			while (enemy.yCoord <= 600){
-			if (enemy.passed == false){
-				if (enemy.yCoord > player.yCoord) {
-					playerScore += 100;
-					txtScore.setText("Score: " + playerScore);
-					enemy.passed = true;
-				}
-			} else;
-			}
-		}
-		}
-		
+		}		
 	}
 	
 	//

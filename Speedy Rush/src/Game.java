@@ -29,14 +29,18 @@ import javafx.util.Duration;
 public class Game extends Application {
 	Stage stage;
 	Player player = new Player();
+	Scene titleScene;
+	GameOver gameOver;
 	
 	public void start(Stage titleStage){
 		GameWorld gameWorld = new GameWorld(this);
+		gameOver = new GameOver(this);
 		
 		stage = titleStage;	
 		stage.setTitle("Speedy Rush");
+		//stage.setResizable(false);
 		Pane titleScreenPane = new Pane();
-		Scene titleScene = new Scene(titleScreenPane,400,600);	
+		titleScene = new Scene(titleScreenPane,400,600);	
 		Font myFont = new Font("Consolas",18);
 
 		
